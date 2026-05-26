@@ -1,0 +1,2 @@
+#!/bin/bash
+IFS='.' read -r -a ip <<< "$1" && mask=$((0xffffffff << (32 - $2))) && for i in 0 1 2 3; do m=$(((mask >> (24 - i*8)) & 255)); n=$((ip[i] & m)); b=$((n | (255 - m))); net="$net $n"; bcast="$bcast $b"; done && read -r -a n_arr <<< "$net" && read -r -a b_arr <<< "$bcast" && printf "%s.%s.%s.%s - %s.%s.%s.%s" "${n_arr[0]}" "${n_arr[1]}" "${n_arr[2]}" "$((n_arr[3] + 1))" "${b_arr[0]}" "${b_arr[1]}" "${b_arr[2]}" "$((b_arr[3] - 1))"
